@@ -125,6 +125,7 @@ def analyze_directory(dir_path):
             print(f"Names Needing Sanitization:")
             for to_sanitize in needing_sanitize:
                 print(Fore.RED + f"{to_sanitize}" + Style.RESET_ALL)
+                print(Fore.GREEN + f"{sanitize_name(to_sanitize)}" + Style.RESET_ALL)
 
     return video_files, part_files
 

@@ -3,14 +3,25 @@ import os
 import re
 
 HASHTAG_PATTERN = re.compile(r'\s*#\S+')
-INVALID_CHARS_PATTERN = re.compile(r'[<>:"/\\|?*!]')
-
 VIDEO_EXTENSIONS = {".mp4", ".mkv", ".avi", ".mov", ".webm", ".flv"}
 
-def sanitize_name(name):
-    name = HASHTAG_PATTERN.sub('', name)
-    name = INVALID_CHARS_PATTERN.sub('', name)
-    return name.strip()
+WHITELIST_PATTERN = re.compile(r'[^A-Za-z0-9 _-]+')
+
+def sanitize_name(filename):
+    base, ext = os.path.splitext(filename)
+
+    name = HASHTAG_PATTERN.sub('', base)
+
+    # Replace disallowed characters with dashes
+    name = WHITELIST_PATTERN.sub('-', name)
+
+    # Collapse multiple dashes or underscores
+    name = re.sub(r'[-_]{2,}', '-', name)
+
+    # Trim leading/trailing dashes or underscores
+    name = name.strip('-_')
+
+    return name.strip() + ext
 
 def rename_recursively(root_dir):
     for dirpath, dirnames, filenames in os.walk(root_dir, topdown=False):
