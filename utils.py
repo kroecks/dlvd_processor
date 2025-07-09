@@ -16,6 +16,9 @@ FFPROBE_FIELDS = {
 def is_video_file(filename):
     return any(filename.lower().endswith(ext) for ext in VIDEO_EXTENSIONS)
 
+def is_part_file(filename):
+    return filename.endswith('.part')
+
 def get_video_info(filepath):
     try:
         result = subprocess.run(

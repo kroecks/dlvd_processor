@@ -1,6 +1,6 @@
 # analyzer.py
 import os
-from utils import is_video_file, get_video_info, find_best_quality_video, calculate_quality_score
+from utils import is_video_file, is_part_file, get_video_info, find_best_quality_video, calculate_quality_score
 from sanitizer import sanitize_name
 from colorama import Fore, Style
 
@@ -93,7 +93,7 @@ def analyze_directory(dir_path):
         for f in files:
             if is_video_file(f):
                 video_files.append(os.path.join(root, f))
-            elif f.endswith('.part'):
+            elif is_part_file(f):
                 part_files.append(os.path.join(root, f))
 
             filename = os.path.basename(f)
