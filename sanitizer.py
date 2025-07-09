@@ -5,7 +5,7 @@ import re
 HASHTAG_PATTERN = re.compile(r'\s*#\S+')
 VIDEO_EXTENSIONS = {".mp4", ".mkv", ".avi", ".mov", ".webm", ".flv"}
 
-WHITELIST_PATTERN = re.compile(r'[^A-Za-z0-9 _-]+')
+WHITELIST_PATTERN = re.compile(r'[^A-Za-z0-9 _\-\(\)]+')
 
 def sanitize_name(filename):
     base, ext = os.path.splitext(filename)
