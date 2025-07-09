@@ -185,7 +185,7 @@ def scan_root_directory(root):
                 height_diff = abs(int(info_a["Height"]) - int(info_b["Height"]))
                 if duration_diff < threshold_seconds and width_diff < threshold_resolution and height_diff < threshold_resolution:
                     print(Fore.CYAN + f"Possible duplicate across folders:\n  {all_video_files[i]}\n  {all_video_files[j]}" + Style.RESET_ALL)
-                    print(Fore.YELLOW + f"Duration:{info_a["Duration"]}=={info_b["Duration"]} Width={info_a["Width"]}=={info_b["Width"]} Height={info_a["Height"]}=={info_b["Height"]}" + Style.RESET_ALL)
+                    print(Fore.YELLOW + f'Duration:{info_a["Duration"]}=={info_b["Duration"]} Width={info_a["Width"]}=={info_b["Width"]} Height={info_a["Height"]}=={info_b["Height"]}' + Style.RESET_ALL)
                     duplicates_found += 1
                     visited.add(i)
                     visited.add(j)
