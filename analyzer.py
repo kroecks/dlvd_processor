@@ -77,6 +77,14 @@ def print_video_info_table(video_files, video_infos, differences):
     for row in rows:
         print(" | ".join(str(row[i]) + ' ' * (col_widths[i] - len(strip_ansi(str(row[i])))) for i in range(len(row))))
 
+def count_videos(dir_path):
+    video_files = []
+    for root, _, files in os.walk(dir_path):
+        for f in files:
+            if is_video_file(f):
+                video_files.append(os.path.join(root, f))
+    return len(video_files)
+
 def analyze_directory(dir_path):
     video_files = []
     part_files = []
@@ -120,6 +128,21 @@ def analyze_directory(dir_path):
 
     return video_files, part_files
 
+def count_files(root):
+    total_video_files = 0
+
+    print("\nCounting Video Files...\n...")
+
+    for entry in os.listdir(root):
+        full_path = os.path.join(root, entry)
+        if os.path.isdir(full_path):
+            videos = count_videos(full_path)
+            total_video_files += videos
+
+    print("\n" + "=" * 50)
+    print("Summary:")
+    print(f" Total video files:              {total_video_files}")
+
 def scan_root_directory(root):
     total_video_files = 0
     total_folders_with_duplicates = 0
@@ -162,6 +185,7 @@ def scan_root_directory(root):
                 height_diff = abs(int(info_a["Height"]) - int(info_b["Height"]))
                 if duration_diff < threshold_seconds and width_diff < threshold_resolution and height_diff < threshold_resolution:
                     print(Fore.CYAN + f"Possible duplicate across folders:\n  {all_video_files[i]}\n  {all_video_files[j]}" + Style.RESET_ALL)
+                    print(Fore.YELLOW + f"Duration:{info_a["Duration"]}=={info_b["Duration"]} Width={info_a["Width"]}=={info_b["Width"]} Height={info_a["Height"]}=={info_b["Height"]}" + Style.RESET_ALL)
                     duplicates_found += 1
                     visited.add(i)
                     visited.add(j)

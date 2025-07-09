@@ -1,7 +1,7 @@
 # cli.py
 import argparse
 from config_handler import get_root_dir
-from analyzer import scan_root_directory
+from analyzer import scan_root_directory, count_files
 from sanitizer import rename_recursively
 from deduplicator import remove_duplicates
 
@@ -22,13 +22,20 @@ def run_cli():
             print("2 - Sanitize packages")
             print("3 - Remove Duplicates")
             print("4 - Perform All")
-            choice = input("Enter choice (1-4): ").strip()
+            print("5 - Count Files")
+            print("0 - Exit")
+            choice = input("Enter choice (1-5): ").strip()
             args = {
                 "analyze": choice == "1",
                 "sanitize": choice == "2",
                 "duplicates": choice == "3",
-                "all": choice == "4"
+                "all": choice == "4",
+                "count": choice == "5",
+                "exit": choice == "0"
             }
+
+        if args.get("exit"):
+            exit(0)
 
         if args.get("all") or args.get("sanitize"):
             rename_recursively(root_dir)
@@ -36,6 +43,9 @@ def run_cli():
             scan_root_directory(root_dir)
         if args.get("all") or args.get("duplicates"):
             remove_duplicates(root_dir)
+
+        if args.get("count"):
+            count_files(root_dir)
 
     else:
         if args.analyze:
