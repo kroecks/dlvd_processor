@@ -48,7 +48,7 @@ def get_target_dir(update=False):
         return currentDirectory
 
     root = input("Enter the final target directory:" + "(" + currentDirectory + ") :").strip()
-    if root == "" or root is None and "TGT_DIR" in config and os.path.exists(config["TGT_DIR"]):
+    if (root == "" or root is None) and ("TGT_DIR" in config and os.path.exists(config["TGT_DIR"])):
         root = config["TGT_DIR"]
     while not os.path.exists(root):
         print("Invalid directory. Try again.")
