@@ -72,9 +72,10 @@ def run_cli():
 
         if args.get("all") or args.get("count"):
             count_files(root_dir)
-        if args.get("all") or args.get("copy"):
+
+        if args.get("copy"):
             copy_all_contents(get_target_dir())
-        if args.get("all") or args.get("move"):
+        if args.get("move"):
             move_all_contents(get_target_dir())
 
     else:
