@@ -14,12 +14,18 @@ def save_config(config):
     with open(CONFIG_FILE, "w") as f:
         json.dump(config, f, indent=2)
 
-def get_root_dir():
+def set_config():
+    get_root_dir(True)
+    get_target_dir(True)
+
+def get_root_dir(update=False):
     config = load_config()
-    if "ROOT_DIR" in config and os.path.exists(config["ROOT_DIR"]):
+    if not update and "ROOT_DIR" in config and os.path.exists(config["ROOT_DIR"]):
         return config["ROOT_DIR"]
 
-    root = input("Enter the root download directory: ").strip()
+    root = input("Enter the root download directory:" + "(" + config["ROOT_DIR"] + ") :").strip()
+    if root == "" or root == None and "ROOT_DIR" in config and os.path.exists(config["ROOT_DIR"]):
+        root = config["ROOT_DIR"]
     while not os.path.exists(root):
         print("Invalid directory. Try again.")
         root = input("Enter the root download directory: ").strip()
@@ -28,27 +34,14 @@ def get_root_dir():
     save_config(config)
     return root
 
-def get_temp_dir():
+def get_target_dir(update=False):
     config = load_config()
-    if "TEMP_DIR" in config and os.path.exists(config["TEMP_DIR"]):
-        return config["TEMP_DIR"]
-
-    root = input("Enter the temp directory: ").strip()
-    while not os.path.exists(root):
-        print("Invalid directory. Try again.")
-        root = input("Enter the temp directory: ").strip()
-
-    config["TEMP_DIR"] = root
-    save_config(config)
-    return root
-
-
-def get_target_dir():
-    config = load_config()
-    if "TGT_DIR" in config and os.path.exists(config["TGT_DIR"]):
+    if not update and "TGT_DIR" in config and os.path.exists(config["TGT_DIR"]):
         return config["TGT_DIR"]
 
-    root = input("Enter the final target directory: ").strip()
+    root = input("Enter the final target directory:" + "(" + config["TGT_DIR"] + ") :").strip()
+    if root == "" or root == None and "TEMP_DIR" in config and os.path.exists(config["TGT_DIR"]):
+        root = config["TGT_DIR"]
     while not os.path.exists(root):
         print("Invalid directory. Try again.")
         root = input("Enter the final target directory: ").strip()

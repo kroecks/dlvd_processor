@@ -1,6 +1,6 @@
 # cli.py
 import argparse
-from config_handler import get_root_dir, get_target_dir
+from config_handler import get_root_dir, get_target_dir, set_config
 from analyzer import scan_root_directory, count_files
 from sanitizer import rename_recursively
 from deduplicator import remove_duplicates
@@ -27,6 +27,7 @@ def run_cli():
         if not any(vars(args).values()):
             print("Choose an operation:")
             print("anal - Analyze packages")
+            print("config - Set config directories")
             print("sani - Sanitize packages")
             print("remd - Remove Duplicates")
             print("remp - Remove part files")
@@ -50,11 +51,15 @@ def run_cli():
                 "copy": choice == "copy",
                 "move": choice == "mov",
                 "group": choice == "group",
+                "config": choice == "config",
                 "exit": choice == "0"
             }
 
         if args.get("exit"):
             exit(0)
+
+        if args.get("config"):
+            set_config()
 
         if args.get("all") or args.get("sanitize"):
             rename_recursively(root_dir)

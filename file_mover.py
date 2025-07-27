@@ -3,7 +3,7 @@
 import os
 import shutil
 from colorama import Fore, Style
-from config_handler import get_root_dir, get_target_dir, get_temp_dir
+from config_handler import get_root_dir, get_target_dir
 
 
 def copy_all_contents(dst_dir):
