@@ -1,10 +1,12 @@
 # cli.py
 import argparse
-from config_handler import get_root_dir
+from config_handler import get_root_dir, get_target_dir
 from analyzer import scan_root_directory, count_files
 from sanitizer import rename_recursively
 from deduplicator import remove_duplicates
 from part_remover import remote_parts
+from codec_processor import perform
+from file_mover import copy_all_contents, move_all_contents
 
 def run_cli():
     parser = argparse.ArgumentParser(description="Video Organizer CLI")
@@ -13,6 +15,10 @@ def run_cli():
     parser.add_argument("-dup", "--duplicates", action="store_true", help="Remove lower-quality duplicates")
     parser.add_argument("-prt", "--parts", action="store_true", help="Remove Part files")
     parser.add_argument("-all", "--all", action="store_true", help="Perform all operations")
+    parser.add_argument("-cdr", "--codecdr", action="store_true", help="Codec Dry Run")
+    parser.add_argument("-cds", "--codecsv", action="store_true", help="Codec Save")
+    parser.add_argument("-mov", "--move", action="store_true", help="Move Files")
+    parser.add_argument("-copy", "--copy", action="store_true", help="Copy Files")
     args = parser.parse_args()
 
     root_dir = get_root_dir()
@@ -20,21 +26,30 @@ def run_cli():
     if args.all or (not any(vars(args).values())):
         if not any(vars(args).values()):
             print("Choose an operation:")
-            print("1 - Analyze packages")
-            print("2 - Sanitize packages")
-            print("3 - Remove Duplicates")
-            print("4 - Remove part files")
-            print("5 - Count Files")
-            print("9 - Perform All")
+            print("anal - Analyze packages")
+            print("sani - Sanitize packages")
+            print("remd - Remove Duplicates")
+            print("remp - Remove part files")
+            print("count - Count Files")
+            print("codecdr - Codec Dry Run")
+            print("codecsv - Codec Save")
+            print("mov - Move Files")
+            print("copy - Copy Files")
+            print("all - Perform All")
             print("0 - Exit")
-            choice = input("Enter choice (1-9): ").strip()
+            choice = input("Enter choice: ").strip()
             args = {
-                "analyze": choice == "1",
-                "sanitize": choice == "2",
-                "duplicates": choice == "3",
-                "parts": choice == "4",
-                "all": choice == "9",
-                "count": choice == "5",
+                "analyze": choice == "anal",
+                "sanitize": choice == "sani",
+                "duplicates": choice == "remd",
+                "parts": choice == "remp",
+                "all": choice == "all",
+                "count": choice == "count",
+                "codecdr": choice == "codecdr",
+                "codecsv": choice == "codecsv",
+                "copy": choice == "copy",
+                "move": choice == "mov",
+                "group": choice == "group",
                 "exit": choice == "0"
             }
 
@@ -50,8 +65,17 @@ def run_cli():
         if args.get("all") or args.get("parts"):
             remote_parts(root_dir)
 
+        if args.get("all") or args.get("codecdr"):
+            perform(dry_run=True)
+        if args.get("all") or args.get("codecsv"):
+            perform(dry_run=False)
+
         if args.get("all") or args.get("count"):
             count_files(root_dir)
+        if args.get("all") or args.get("copy"):
+            copy_all_contents(get_target_dir())
+        if args.get("all") or args.get("move"):
+            move_all_contents(get_target_dir())
 
     else:
         if args.analyze:

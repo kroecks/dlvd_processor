@@ -27,3 +27,32 @@ def get_root_dir():
     config["ROOT_DIR"] = root
     save_config(config)
     return root
+
+def get_temp_dir():
+    config = load_config()
+    if "TEMP_DIR" in config and os.path.exists(config["TEMP_DIR"]):
+        return config["TEMP_DIR"]
+
+    root = input("Enter the temp directory: ").strip()
+    while not os.path.exists(root):
+        print("Invalid directory. Try again.")
+        root = input("Enter the temp directory: ").strip()
+
+    config["TEMP_DIR"] = root
+    save_config(config)
+    return root
+
+
+def get_target_dir():
+    config = load_config()
+    if "TGT_DIR" in config and os.path.exists(config["TGT_DIR"]):
+        return config["TGT_DIR"]
+
+    root = input("Enter the final target directory: ").strip()
+    while not os.path.exists(root):
+        print("Invalid directory. Try again.")
+        root = input("Enter the final target directory: ").strip()
+
+    config["TGT_DIR"] = root
+    save_config(config)
+    return root
