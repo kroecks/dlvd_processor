@@ -20,8 +20,12 @@ def set_config():
 
 def get_root_dir(update=False):
     config = load_config()
-    if not update and "ROOT_DIR" in config and os.path.exists(config["ROOT_DIR"]):
-        return config["ROOT_DIR"]
+    currentDirectory = ""
+    if "ROOT_DIR" in config and os.path.exists(config["ROOT_DIR"]):
+        currentDirectory = config["ROOT_DIR"]
+
+    if not update and currentDirectory != "":
+        return currentDirectory
 
     root = input("Enter the root download directory:" + "(" + config["ROOT_DIR"] + ") :").strip()
     if root == "" or root == None and "ROOT_DIR" in config and os.path.exists(config["ROOT_DIR"]):
@@ -36,10 +40,14 @@ def get_root_dir(update=False):
 
 def get_target_dir(update=False):
     config = load_config()
-    if not update and "TGT_DIR" in config and os.path.exists(config["TGT_DIR"]):
-        return config["TGT_DIR"]
+    currentDirectory = ""
+    if "TGT_DIR" in config and os.path.exists(config["TGT_DIR"]):
+        currentDirectory = config["TGT_DIR"]
 
-    root = input("Enter the final target directory:" + "(" + config["TGT_DIR"] + ") :").strip()
+    if not update and currentDirectory != "":
+        return currentDirectory
+
+    root = input("Enter the final target directory:" + "(" + currentDirectory + ") :").strip()
     if root == "" or root == None and "TEMP_DIR" in config and os.path.exists(config["TGT_DIR"]):
         root = config["TGT_DIR"]
     while not os.path.exists(root):
