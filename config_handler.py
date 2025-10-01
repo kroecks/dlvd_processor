@@ -27,7 +27,7 @@ def get_root_dir(update=False):
     if not update and currentDirectory != "":
         return currentDirectory
 
-    root = input("Enter the root download directory:" + "(" + config["ROOT_DIR"] + ") :").strip()
+    root = input("Enter the root download directory:" + "(" + currentDirectory + ") :").strip()
     if root == "" or root == None and "ROOT_DIR" in config and os.path.exists(config["ROOT_DIR"]):
         root = config["ROOT_DIR"]
     while not os.path.exists(root):
